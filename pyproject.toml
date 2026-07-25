@@ -1,0 +1,64 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "nvion-protocol"
+version = "1.0.0"
+description = "Universal agent constitution engine — constitutional governance for AI agents."
+readme = "README.md"
+license = { file = "LICENSE" }
+authors = [{ name = "Nathan Daniel", email = "natu@nnexus.io" }]
+keywords = [
+    "ai-agents", "agent-governance", "constitution", "autonomous-ai",
+    "multi-agent", "agent-security", "web3", "agentic-systems"
+]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Operating System :: OS Independent",
+    "Topic :: Software Development :: Libraries :: Application Frameworks",
+    "Topic :: Security",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+requires-python = ">=3.11"
+dependencies = [
+    "python-dotenv>=1.0.0",
+    "pyyaml>=6.0.1",
+    "requests>=2.31.0",
+    "python-telegram-bot>=20.7",
+    "rich>=13.7.0",
+    "cryptography>=42.0.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=7.4.0",
+    "pytest-cov>=4.1.0",
+    "ruff>=0.1.0",
+]
+
+[project.urls]
+Homepage = "https://nvionprotocol.dev"
+Repository = "https://github.com/nataw-1/Vion-Protocol"
+"Bug Tracker" = "https://github.com/nataw-1/Vion-Protocol/issues"
+
+[project.scripts]
+nvion = "nvion.cli:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["nvion*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+python_files = ["test_*.py"]
+
+[tool.ruff]
+line-length = 100
+
+[tool.ruff.lint]
+select = ["E", "F"]
+ignore = ["E501", "F401", "E402"]
