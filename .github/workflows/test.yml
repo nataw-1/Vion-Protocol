@@ -1,0 +1,57 @@
+name: N VION Protocol — CI
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    name: Run test suite (${{ matrix.python-version }})
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ["3.11", "3.12"]
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest pytest-cov
+          pip install -e .
+
+      - name: Run full test suite
+        run: pytest tests/ -v --tb=short
+        env:
+          VION_AUTH_TOKEN: test-ci-token
+          DEPLOYMENT_NAME: ci-test
+          DRY_RUN_DEFAULT: "TRUE"
+
+      - name: Verify package imports
+        run: |
+          python -c "from nvion import NSoul; print('NSoul OK')"
+          python -c "from nvion.adapters import CustomAgentAdapter, FunctionAdapter; print('Adapters OK')"
+          python -c "from nvion.core.exceptions import NSoulError; print('Exceptions OK')"
+
+  lint:
+    name: Code quality
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - name: Install ruff
+        run: pip install ruff
+      - name: Run ruff
+        run: ruff check nvion/ --ignore E501,F401,E402
