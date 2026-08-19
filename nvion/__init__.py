@@ -48,7 +48,7 @@ from .core.peer_detector import PeerToPeerDetector, PeerViolation
 from .core.risk_caps import CapViolation, RiskCapEvaluator
 from .core.telegram_reporter import TelegramReporter
 
-__version__ = "1.0.0"
+__version__ = "1.1.1"
 __author__ = "Nathan Daniel / N Nexus"
 
 
